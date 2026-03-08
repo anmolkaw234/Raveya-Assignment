@@ -11,13 +11,21 @@ from app.services.proposal_service import ProposalService
 router = APIRouter()
 
 
+@router.get("/")
+def root():
+    return {"message": "Rayeva AI Assignment API is running"}
+
+
 @router.get("/health", response_model=HealthResponse)
 def health_check() -> HealthResponse:
     return HealthResponse()
 
 
 @router.post("/ai/category-tags", response_model=CategoryResponse)
-def generate_category_tags(payload: ProductInput, db: Session = Depends(get_db)) -> CategoryResponse:
+def generate_category_tags(
+    payload: ProductInput,
+    db: Session = Depends(get_db),
+) -> CategoryResponse:
     saved = CategoryService().analyze_product(db, payload)
     return CategoryResponse(
         id=saved.id,
@@ -32,7 +40,10 @@ def generate_category_tags(payload: ProductInput, db: Session = Depends(get_db))
 
 
 @router.post("/ai/proposals", response_model=ProposalResponse)
-def generate_proposal(payload: ProposalRequest, db: Session = Depends(get_db)) -> ProposalResponse:
+def generate_proposal(
+    payload: ProposalRequest,
+    db: Session = Depends(get_db),
+) -> ProposalResponse:
     saved = ProposalService().generate_proposal(db, payload)
     return ProposalResponse(
         id=saved.id,

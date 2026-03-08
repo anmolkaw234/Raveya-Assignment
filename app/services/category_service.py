@@ -11,7 +11,12 @@ class CategoryService:
         self.ai_client = AIClient()
 
     def _fallback(self, product: ProductInput) -> dict:
-        text = f"{product.name} {product.description} {product.material or ''}".lower()
+        text = (
+            f"{product.product_name} "
+            f"{product.description} "
+            f"{' '.join(product.materials)}"
+        ).lower()
+
         if any(word in text for word in ["bottle", "mug", "cup"]):
             primary = "Drinkware"
             sub = "Reusable Bottles"
@@ -30,12 +35,13 @@ class CategoryService:
             filters = ["Eco Friendly", "Reusable"]
 
         tags = [
-            product.name.lower().replace(" ", "-"),
+            product.product_name.lower().replace(" ", "-"),
             "sustainable",
             "eco-friendly",
             primary.lower().replace(" ", "-"),
             sub.lower().replace(" ", "-"),
         ]
+
         return {
             "primary_category": primary,
             "sub_category": sub,
@@ -49,23 +55,28 @@ class CategoryService:
             "Return strict JSON with keys: primary_category, sub_category, seo_tags, sustainability_filters. "
             "seo_tags must be 5 to 10 short lowercase tags. sustainability_filters must be 2 to 6 buyer-facing filters."
         )
+
         user_prompt = (
             f"Product data:\n"
-            f"name: {product.name}\n"
+            f"product_name: {product.product_name}\n"
             f"description: {product.description}\n"
-            f"material: {product.material}\n"
-            f"target_customer: {product.target_customer}\n"
-            f"price_in_inr: {product.price_in_inr}"
+            f"materials: {', '.join(product.materials)}\n"
+            f"target_market: {product.target_market}\n"
+            f"price: {product.price}"
         )
 
         try:
-            raw = self.ai_client.generate_json(system_prompt=system_prompt, user_prompt=user_prompt)
+            raw = self.ai_client.generate_json(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+            )
         except Exception:
             raw = self._fallback(product)
 
         validated = CategoryResult.model_validate(raw)
+
         saved = ProductAnalysis(
-            product_name=product.name,
+            product_name=product.product_name,
             primary_category=validated.primary_category,
             sub_category=validated.sub_category,
             seo_tags=validated.seo_tags,
@@ -82,4 +93,5 @@ class CategoryService:
             prompt_text=user_prompt,
             response_payload=validated.model_dump(),
         )
+
         return saved
