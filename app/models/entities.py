@@ -32,6 +32,7 @@ class Proposal(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     buyer_name = Column(String(255), nullable=False)
+    buyer_type = Column(String(100), nullable=False)
     budget = Column(Integer, nullable=False)
     product_mix = Column(JSON, nullable=False)
     cost_breakdown = Column(JSON, nullable=False)
