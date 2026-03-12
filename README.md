@@ -143,3 +143,18 @@ README.md
 5. Run category generation request
 6. Run proposal generation request
 7. Show SQLite-stored outputs and prompt logs
+
+## SQLite
+1. Open in terminal using:
+   ```bash
+   sqlite raveya.db
+   ```
+2. Then inside SQLite:
+   ```text
+.tables
+.mode column
+.headers on
+SELECT * FROM product_analyses;
+SELECT * FROM proposals;
+SELECT * FROM prompt_logs;
+```
