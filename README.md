@@ -35,7 +35,7 @@ Architected but not fully implemented:
 5. Add your real API key in `.env`.
 6. Start the app:
    ```bash
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
    ```
 7. Open the forwarded port and visit `/docs`.
 
