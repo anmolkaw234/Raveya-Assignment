@@ -143,9 +143,3 @@ README.md
 5. Run category generation request
 6. Run proposal generation request
 7. Show SQLite-stored outputs and prompt logs
-8. Explain architecture for modules 3 and 4
-
-## Notes for Submission
-- Add screenshots in the README if desired
-- Record the demo with GitHub Codespaces and Swagger UI visible
-- Keep the real `.env` out of version control
