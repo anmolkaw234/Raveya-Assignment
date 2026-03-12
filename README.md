@@ -144,13 +144,15 @@ README.md
 6. Run proposal generation request
 7. Show SQLite-stored outputs and prompt logs
 
-## SQLite
-1. Open in terminal using:
-   ```bash
-   sqlite raveya.db
-   ```
-2. Then inside SQLite:
-   ```text
+## Viewing SQLite-Stored Outputs and Prompt Logs
+
+### 1. Open the SQLite database
+Run:
+```bash
+sqlite3 rayeva.db
+```
+### 2. View tables and stored records
+```sql
 .tables
 .mode column
 .headers on
